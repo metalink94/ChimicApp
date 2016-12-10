@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/password_layout">
+
+        <EditText
+            android:id="@+id/et_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_account_circle_black_24px"
+            android:drawablePadding="10dp"
+            android:hint="@string/login_hint"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:textColor="@color/app_text_color"
+            android:textSize="14sp" />
+    </android.support.design.widget.TextInputLayout>
+
+
+<android.support.design.widget.TextInputLayout
+    android:id="@+id/password_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true">
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/ic_lock_black_24px"
+        android:drawablePadding="10dp"
+        android:hint="@string/password_hint"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:maxLength="40"
+        android:maxLines="1"
+        android:textColor="@color/app_text_color"
+        android:textSize="14sp" />
+</android.support.design.widget.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/tv_check_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/password_layout"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="@string/check_user"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_change_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/change_user"
+        android:clickable="true"
+        android:textColor="@color/colorPrimaryDark" />
+
+</RelativeLayout>

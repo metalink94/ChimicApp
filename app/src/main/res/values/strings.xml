@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ChemistryDrawer</string>
+    <string name="action_settings">Настройки</string>
+    <string name="login_hint">Имя пользователя:</string>
+    <string name="password_hint">Пароль</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="check_user">Вы зашли как: %s \nВведите пароль для продолжения работы с приложением</string>
+    <string name="need_more_info">Все поля являются обязательными</string>
+    <string name="change_user">Сменить пользователя</string>
+    <string name="action_profile">Профиль</string>
+</resources>

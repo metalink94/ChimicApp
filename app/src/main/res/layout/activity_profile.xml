@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Имя:"
+            android:textColor="@color/app_text_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/user_surname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Фамилия:"
+            android:textColor="@color/app_text_color"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/user_additional_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Доп. информация:"
+            android:textColor="@color/app_text_color"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/change_user"
+        style="@style/ButtonStyle"
+        android:layout_alignParentBottom="true"
+        android:text="Сменить пользователя" />
+    <TextView
+        android:id="@+id/add_experiment"
+        android:layout_above="@+id/change_user"
+        style="@style/ButtonStyle"
+        android:layout_marginBottom="2dp"
+        android:text="Добавить эксперемент" />
+
+</RelativeLayout>
