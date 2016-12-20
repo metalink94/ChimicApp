@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import diplom.itis.chemistrydrawer.adapters.BaseAdapter;
-import diplom.itis.chemistrydrawer.network.IDataProvider;
 import timber.log.Timber;
 
 /**
@@ -14,7 +13,6 @@ import timber.log.Timber;
 public class BaseActivity extends AppCompatActivity {
 
     protected BaseAdapter mAdapter;
-    protected IDataProvider mDataProvider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
