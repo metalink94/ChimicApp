@@ -75,6 +75,10 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.fab:
                 startActivity(new Intent(ExperimentsActivity.this, WebViewActivity.class));
+                break;
+            case R.id.taplayout:
+                startActivity(new Intent(ExperimentsActivity.this, GraphActivity.class));
+                break;
         }
     }
 

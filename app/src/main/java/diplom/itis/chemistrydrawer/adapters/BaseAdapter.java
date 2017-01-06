@@ -86,6 +86,7 @@ public class BaseAdapter extends RecyclerView.Adapter {
             } else if (experimentsModel.status.equals(ExperimentsModel.STATUS_ERROR)) {
                 experimentHolder.iconStatus.setImageResource(R.drawable.ic_highlight_off_black_24px);
             }
+            experimentHolder.setOnClickListener(mOnClickListener, experimentsModel);
         }
         
     }
@@ -255,6 +256,7 @@ public class BaseAdapter extends RecyclerView.Adapter {
         TextView title;
         TextView description;
         ImageView iconStatus;
+        RelativeLayout tapLayout;
 
         public ExperimentHolder(View itemView) {
             super(itemView);
@@ -262,6 +264,12 @@ public class BaseAdapter extends RecyclerView.Adapter {
             title = (TextView) itemView.findViewById(R.id.title);
             description = (TextView) itemView.findViewById(R.id.description);
             iconStatus = (ImageView) itemView.findViewById(R.id.icon_status);
+            tapLayout = (RelativeLayout) itemView.findViewById(R.id.taplayout);
+        }
+
+        public void setOnClickListener(View.OnClickListener onClickListener, Object tag) {
+            tapLayout.setOnClickListener(onClickListener);
+            tapLayout.setTag(tag);
         }
     }
 }
