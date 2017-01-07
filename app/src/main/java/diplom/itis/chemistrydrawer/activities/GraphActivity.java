@@ -1,79 +1,69 @@
 package diplom.itis.chemistrydrawer.activities;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
+
+import static diplom.itis.chemistrydrawer.R.id.toolbar;
 
 /**
  * Created by Денис on 06.01.2017.
  */
 
-public class GraphActivity extends BaseActivity {
+public class GraphActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new DrawingView(this));
+        setContentView(R.layout.activity_graph);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
-    class DrawingView extends SurfaceView {
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-        private final SurfaceHolder surfaceHolder;
-        private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        if (id == R.id.nav_gallery) {
 
-        private List<Point> pointsList = new ArrayList<Point>();
+        } else if (id == R.id.nav_slideshow) {
 
-        public DrawingView(Context context) {
-            super(context);
-            surfaceHolder = getHolder();
-            paint.setColor(Color.WHITE);
-            paint.setStyle(Paint.Style.FILL);
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
         }
 
-        @Override
-        public boolean onTouchEvent(MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                if (surfaceHolder.getSurface().isValid()) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
-                    // Add current touch position to the list of points
-                    pointsList.add(new Point((int) event.getX(), (int) event.getY()));
-
-                    // Get canvas from surface
-                    Canvas canvas = surfaceHolder.lockCanvas();
-
-                    // Clear screen
-                    canvas.drawColor(Color.BLACK);
-
-                    // Iterate on the list
-                    for (int i = 0; i < pointsList.size(); i++) {
-                        Point current = pointsList.get(i);
-
-                        // Draw points
-                        canvas.drawCircle(current.x, current.y, 10, paint);
-
-                        // Draw line with next point (if it exists)
-                        if (i + 1 < pointsList.size()) {
-                            Point next = pointsList.get(i + 1);
-                            canvas.drawLine(current.x, current.y, next.x, next.y, paint);
-                        }
-                    }
-
-                    // Release canvas
-                    surfaceHolder.unlockCanvasAndPost(canvas);
-                }
-            }
-            return false;
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 }

@@ -8,4 +8,6 @@
     <string name="need_more_info">Все поля являются обязательными</string>
     <string name="change_user">Сменить пользователя</string>
     <string name="action_profile">Профиль</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
 </resources>
