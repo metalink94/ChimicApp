@@ -32,10 +32,11 @@ public class MyView extends SurfaceView {
         initMyView();
     }
 
-    public MyView(Context context, float x, float y) {
+    public MyView(Context context, float x, float y, int numberOfPoint) {
         super(context);
         this.x = x;
         this.y = y;
+        this.numberOfPoint = numberOfPoint;
     }
 
     public MyView(Context context, AttributeSet attrs) {
@@ -67,7 +68,7 @@ public class MyView extends SurfaceView {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (surfaceHolder.getSurface().isValid()) {
                 // Add current touch position to the list of points
-                pointsList.add(new MyView(getContext(), (int) event.getX(), (int) event.getY()));
+                pointsList.add(new MyView(getContext(), (int) event.getX(), (int) event.getY(), numberOfPoint));
                 // Get canvas from surface
                 Canvas canvas = surfaceHolder.lockCanvas();
                 // Clear screen
@@ -77,7 +78,7 @@ public class MyView extends SurfaceView {
                     MyView current = pointsList.get(i);
                     float radius = 80.0f;
                     // Draw points
-                    myShape.setPolygon(current.x, current.y, radius, numberOfPoint);
+                    myShape.setPolygon(current.x, current.y, radius, current.numberOfPoint);
                     canvas.drawPath(myShape.getPath(), myShape.getPaint());
                     // Draw line with next point (if it exists)
                     if (i + 1 < pointsList.size()) {
@@ -90,6 +91,14 @@ public class MyView extends SurfaceView {
             }
         }
         return false;
+    }
+
+    public int getNumberOfPoint() {
+        return numberOfPoint;
+    }
+
+    public void setNumberOfPoint(int numberOfPoint) {
+        this.numberOfPoint = numberOfPoint;
     }
 }
 

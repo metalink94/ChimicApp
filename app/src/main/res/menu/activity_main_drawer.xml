@@ -3,17 +3,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_triangle"
             android:icon="@mipmap/ic_launcher"
-            android:title="Import"/>
+            android:title="Треугольник"/>
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_pentagone"
             android:icon="@mipmap/ic_launcher"
-            android:title="Gallery"/>
+            android:title="Пятиугольник"/>
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_hexsagone"
             android:icon="@mipmap/ic_launcher"
-            android:title="Slideshow"/>
+            android:title="Шестиугольник"/>
         <item
             android:id="@+id/nav_manage"
             android:icon="@mipmap/ic_launcher"
