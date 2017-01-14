@@ -61,11 +61,13 @@ public class GraphActivity extends BaseActivity implements NavigationView.OnNavi
 
         } else if (id == R.id.nav_share) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Make your selection");
-            builder.setItems(readFile(), new DialogInterface.OnClickListener() {
+            builder.setTitle("Выбрать химический элемент");
+            final String [] array = readFile();
+            builder.setItems(array, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     // Do something with the selection
-                    Toast.makeText(GraphActivity.this, readFile()[item], Toast.LENGTH_LONG).show();
+                    Toast.makeText(GraphActivity.this, array[item], Toast.LENGTH_LONG).show();
+                    mView.setText(array[item].substring(0,array[item].indexOf(" ")));
                 }
             });
             AlertDialog alert = builder.create();

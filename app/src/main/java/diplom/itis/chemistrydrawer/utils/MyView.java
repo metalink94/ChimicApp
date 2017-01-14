@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -23,6 +24,8 @@ public class MyView extends SurfaceView {
     float x, y;
     private List<MyView> pointsList = new ArrayList<MyView>();
     private SurfaceHolder surfaceHolder;
+    private String text = "";
+    boolean flag;
 
     public MyView(Context context) {
         super(context);
@@ -32,11 +35,21 @@ public class MyView extends SurfaceView {
         initMyView();
     }
 
-    public MyView(Context context, float x, float y, int numberOfPoint) {
+    public MyView(Context context, float x, float y, int numberOfPoint, boolean flag) {
         super(context);
         this.x = x;
         this.y = y;
         this.numberOfPoint = numberOfPoint;
+        this.text = "";
+        this.flag = flag;
+    }
+
+    public MyView(Context context, float x, float y, String text, boolean flag) {
+        super(context);
+        this.x = x;
+        this.y = y;
+        this.text = text;
+        this.flag = flag;
     }
 
     public MyView(Context context, AttributeSet attrs) {
@@ -68,22 +81,24 @@ public class MyView extends SurfaceView {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (surfaceHolder.getSurface().isValid()) {
                 // Add current touch position to the list of points
-                pointsList.add(new MyView(getContext(), (int) event.getX(), (int) event.getY(), numberOfPoint));
-                // Get canvas from surface
                 Canvas canvas = surfaceHolder.lockCanvas();
                 // Clear screen
                 canvas.drawColor(Color.WHITE);
-                // Iterate on the list
-                for (int i = 0; i < pointsList.size(); i++) {
-                    MyView current = pointsList.get(i);
-                    float radius = 80.0f;
-                    // Draw points
-                    myShape.setPolygon(current.x, current.y, radius, current.numberOfPoint);
-                    canvas.drawPath(myShape.getPath(), myShape.getPaint());
-                    // Draw line with next point (if it exists)
-                    if (i + 1 < pointsList.size()) {
-                        MyView next = pointsList.get(i + 1);
-                        canvas.drawLine(current.x, current.y, next.x - 40f, next.y - 60f, paint);
+
+                if (getText().equals("")) {
+                    pointsList.add(new MyView(getContext(), (int) event.getX(), (int) event.getY(), numberOfPoint, true));
+                } else {
+                    pointsList.add(new MyView(getContext(), (int) event.getX(), (int) event.getY(), text, false));
+                }
+                for (MyView view : pointsList) {
+                    if (view.flag) {
+                        float radius = 80.0f;
+                        // Draw points
+                        myShape.setPolygon(view.x, view.y, radius, view.numberOfPoint);
+                        canvas.drawPath(myShape.getPath(), myShape.getPaint());
+                    } else {
+                        paint.setTextSize(24f);
+                        canvas.drawText(view.text, view.x, view.y, paint);
                     }
                 }
                 // Release canvas
@@ -93,12 +108,21 @@ public class MyView extends SurfaceView {
         return false;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public int getNumberOfPoint() {
         return numberOfPoint;
     }
 
     public void setNumberOfPoint(int numberOfPoint) {
         this.numberOfPoint = numberOfPoint;
+        this.text = "";
     }
 }
 
