@@ -1,4 +1,4 @@
-package diplom.itis.chemistrydrawer.activities;
+package diplom.itis.chemistrydrawer.screens.graphic;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -27,15 +27,12 @@ import diplom.itis.chemistrydrawer.utils.MyView;
  * Created by Денис on 06.01.2017.
  */
 
-public class GraphActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class GraphActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, GraphView {
 
     private MyView mView;
+    private GraphPresenter mPresenter;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
-        mView = (MyView) findViewById(R.id.view);
+    private void setNavigation() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -48,64 +45,39 @@ public class GraphActivity extends BaseActivity implements NavigationView.OnNavi
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_graph);
+        mView = (MyView) findViewById(R.id.view);
+        setNavigation();
+        mPresenter = new GraphPresenter(this);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_triangle) {
-            mView.setNumberOfPoint(3);
+            mPresenter.setAngles(3);
         } else if (id == R.id.nav_pentagone) {
-            mView.setNumberOfPoint(5);
+            mPresenter.setAngles(5);
         } else if (id == R.id.nav_hexsagone) {
-            mView.setNumberOfPoint(6);
+            mPresenter.setAngles(6);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Выбрать химический элемент");
-            final String [] array = readFile();
-            builder.setItems(array, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    // Do something with the selection
-                    Toast.makeText(GraphActivity.this, array[item], Toast.LENGTH_LONG).show();
-                    mView.setText(array[item].substring(0,array[item].indexOf(" ")));
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
+            try {
+                mPresenter.setAlertDialog(new BufferedReader(
+                        new InputStreamReader(getAssets().open("elements.txt"), "UTF-8")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (id == R.id.nav_send) {
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private String[] readFile() {
-        BufferedReader reader = null;
-        List<String> temps = new ArrayList<>();
-        try {
-            reader = new BufferedReader(
-                    new InputStreamReader(getAssets().open("elements.txt"), "UTF-8"));
-            // do reading, usually loop until end of file reading
-            String mLine;
-            while ((mLine = reader.readLine()) != null) {
-                //process line
-                temps.add(mLine);
-            }
-        } catch (IOException e) {
-            //log the exception
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    //log the exception
-                }
-            }
-        }
-        String[] tempsArray = temps.toArray(new String[0]);
-        return tempsArray;
     }
 
     @Override
@@ -116,5 +88,26 @@ public class GraphActivity extends BaseActivity implements NavigationView.OnNavi
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void setAngles(int i) {
+        mView.setNumberOfPoint(i);
+    }
+
+    @Override
+    public void showAlertDialog(String[] arrayList) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Выбрать химический элемент");
+        final String [] array = arrayList;
+        builder.setItems(array, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                // Do something with the selection
+                Toast.makeText(GraphActivity.this, array[item], Toast.LENGTH_LONG).show();
+                mView.setText(array[item].substring(0,array[item].indexOf(" ")));
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

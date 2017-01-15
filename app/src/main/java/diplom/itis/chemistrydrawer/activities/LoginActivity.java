@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import diplom.itis.chemistrydrawer.R;
+import diplom.itis.chemistrydrawer.screens.tasks.TasksListActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
 
 /**

@@ -1,4 +1,4 @@
-package diplom.itis.chemistrydrawer.activities;
+package diplom.itis.chemistrydrawer.screens.experiments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -15,59 +14,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
+import diplom.itis.chemistrydrawer.activities.WebViewActivity;
 import diplom.itis.chemistrydrawer.adapters.BaseAdapter;
 import diplom.itis.chemistrydrawer.models.ExperimentsModel;
 import diplom.itis.chemistrydrawer.models.TaskModel;
+import diplom.itis.chemistrydrawer.screens.graphic.GraphActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
 
 /**
  * Created by denis_000 on 06.11.2016.
  */
-public class ExperimentsActivity extends BaseActivity implements View.OnClickListener{
+public class ExperimentsActivity extends BaseActivity implements View.OnClickListener, ExperimentsView{
 
     private RecyclerView mExperimentsList;
     private FloatingActionButton mFab;
+    private ExperimentsPresenter mPresenter;
 
     public static final String KEY_EXPERIMENTS = "experiments";
-
-    private void getStatusBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(((TaskModel) getIntent().getParcelableExtra(KEY_EXPERIMENTS)).title);
-    }
-    
-    
-    private void setViews() {
-        mExperimentsList = (RecyclerView) findViewById(R.id.recycler_view);
-        mExperimentsList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        mExperimentsList.setLayoutManager(llm);
-        mAdapter = new BaseAdapter(this, setExperiments(), this);
-        mExperimentsList.setAdapter(mAdapter);
-        getStatusBar();
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mFab.setOnClickListener(this);
-    }
-
-    private List<ExperimentsModel> setExperiments() {
-        List<ExperimentsModel> taskModels = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            String status = ExperimentsModel.STATUS_OK;
-            if (i%2 == 0) {
-                status = ExperimentsModel.STATUS_ERROR;
-            }
-            ExperimentsModel model = new ExperimentsModel(i, "Эксперимент №" + i, "Описание данной задачи под номером " + i, status);
-            taskModels.add(model);
-        }
-        return taskModels;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setViews();
+        mPresenter = new ExperimentsPresenter(this);
+        mPresenter.setViews();
+        mPresenter.getList();
     }
 
     @Override
@@ -94,5 +65,31 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
         }
 
         return true;
+    }
+
+    @Override
+    public void showList(List<ExperimentsModel> experimentsModels) {
+        mAdapter.addItems(experimentsModels);
+    }
+
+    @Override
+    public void showViews() {
+        mExperimentsList = (RecyclerView) findViewById(R.id.recycler_view);
+        mExperimentsList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        mExperimentsList.setLayoutManager(llm);
+        mAdapter = new BaseAdapter(this, this);
+        mExperimentsList.setAdapter(mAdapter);
+        mPresenter.setActionBar();
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(this);
+    }
+
+    @Override
+    public void showActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(((TaskModel) getIntent().getParcelableExtra(KEY_EXPERIMENTS)).title);
     }
 }
