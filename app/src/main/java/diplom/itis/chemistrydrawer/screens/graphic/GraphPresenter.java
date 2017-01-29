@@ -27,6 +27,10 @@ public class GraphPresenter {
         mView.showAlertDialog(readFile(bufferedReader));
     }
 
+    public void setAlertDialog(String[] colors) {
+        mView.showAlertDialogColor(colors);
+    }
+
     private String[] readFile(BufferedReader bufferedReader) {
         BufferedReader reader = null;
         List<String> temps = new ArrayList<>();

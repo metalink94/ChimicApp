@@ -1,6 +1,8 @@
 package diplom.itis.chemistrydrawer.screens.graphic;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,6 +11,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -19,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
+import diplom.itis.chemistrydrawer.activities.LoginActivity;
+import diplom.itis.chemistrydrawer.screens.tasks.TasksListActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
 import diplom.itis.chemistrydrawer.utils.MyView;
 
@@ -64,7 +70,7 @@ public class GraphActivity extends BaseActivity implements NavigationView.OnNavi
         } else if (id == R.id.nav_hexsagone) {
             mPresenter.setAngles(6);
         } else if (id == R.id.nav_manage) {
-
+            mPresenter.setAlertDialog(new String[] {"Red color", "Green color", "Blue color"});
         } else if (id == R.id.nav_share) {
             try {
                 mPresenter.setAlertDialog(new BufferedReader(
@@ -105,6 +111,32 @@ public class GraphActivity extends BaseActivity implements NavigationView.OnNavi
                 // Do something with the selection
                 Toast.makeText(GraphActivity.this, array[item], Toast.LENGTH_LONG).show();
                 mView.setText(array[item].substring(0,array[item].indexOf(" ")));
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    @Override
+    public void showAlertDialogColor(String[] colors) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Выбрать химический элемент");
+        final String [] array = colors;
+        builder.setItems(array, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                // Do something with the selection
+                Toast.makeText(GraphActivity.this, array[item], Toast.LENGTH_LONG).show();
+                switch (item) {
+                    case 0:
+                        mView.setColor(Color.RED);
+                        break;
+                    case 1:
+                        mView.setColor(Color.GREEN);
+                        break;
+                    case 2:
+                        mView.setColor(Color.BLUE);
+                        break;
+                }
             }
         });
         AlertDialog alert = builder.create();

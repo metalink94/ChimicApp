@@ -13,10 +13,11 @@ public class MyShape {
 
     private Paint paint;
     private Path path;
+    public int color  = Color.RED;
 
     public MyShape() {
         paint = new Paint();
-        paint.setColor(Color.RED);
+        paint.setColor(color);
         paint.setStrokeWidth(3);
         paint.setStyle(Paint.Style.STROKE);
 

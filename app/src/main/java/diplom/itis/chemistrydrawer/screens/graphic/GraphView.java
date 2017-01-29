@@ -8,4 +8,6 @@ public interface GraphView {
     void setAngles(int i);
 
     void showAlertDialog(String[] arrayList);
+
+    void showAlertDialogColor(String[] colors);
 }

@@ -6,12 +6,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import diplom.itis.chemistrydrawer.R;
+import diplom.itis.chemistrydrawer.models.GraphModel;
 
 /**
  * Created by Денис on 06.01.2017.
@@ -21,11 +25,13 @@ public class MyView extends SurfaceView {
 
     MyShape myShape;
     int numberOfPoint = 6; //default
-    float x, y;
-    private List<MyView> pointsList = new ArrayList<MyView>();
+    private List<GraphModel> pointsList = new ArrayList<GraphModel>();
     private SurfaceHolder surfaceHolder;
     private String text = "";
-    boolean flag;
+    private int color = Color.RED;
+    private float fontSize = 24f;
+    private int fontColor = R.color.app_text_color;
+    private int radious = 80;
 
     public MyView(Context context) {
         super(context);
@@ -33,23 +39,6 @@ public class MyView extends SurfaceView {
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.FILL);
         initMyView();
-    }
-
-    public MyView(Context context, float x, float y, int numberOfPoint, boolean flag) {
-        super(context);
-        this.x = x;
-        this.y = y;
-        this.numberOfPoint = numberOfPoint;
-        this.text = "";
-        this.flag = flag;
-    }
-
-    public MyView(Context context, float x, float y, String text, boolean flag) {
-        super(context);
-        this.x = x;
-        this.y = y;
-        this.text = text;
-        this.flag = flag;
     }
 
     public MyView(Context context, AttributeSet attrs) {
@@ -84,21 +73,30 @@ public class MyView extends SurfaceView {
                 Canvas canvas = surfaceHolder.lockCanvas();
                 // Clear screen
                 canvas.drawColor(Color.WHITE);
-
+                GraphModel graphModel = new GraphModel((int) event.getX(), (int) event.getY());
                 if (getText().equals("")) {
-                    pointsList.add(new MyView(getContext(), (int) event.getX(), (int) event.getY(), numberOfPoint, true));
+                    graphModel.numberOfAngle = numberOfPoint;
+                    graphModel.radious = radious;
+                    graphModel.flag = true;
+                    graphModel.color = color;
                 } else {
-                    pointsList.add(new MyView(getContext(), (int) event.getX(), (int) event.getY(), text, false));
+                    graphModel.text = text;
+                    graphModel.flag = false;
+                    graphModel.fontSize = fontSize;
+                    graphModel.fontColor = fontColor;
                 }
-                for (MyView view : pointsList) {
+                pointsList.add(graphModel);
+                for (GraphModel view : pointsList) {
                     if (view.flag) {
-                        float radius = 80.0f;
                         // Draw points
-                        myShape.setPolygon(view.x, view.y, radius, view.numberOfPoint);
-                        canvas.drawPath(myShape.getPath(), myShape.getPaint());
+                        Paint paintShape = myShape.getPaint();
+                        paintShape.setColor(graphModel.color);
+                        myShape.setPolygon(view.xPos, view.yPos, view.radious, view.numberOfAngle);
+                        canvas.drawPath(myShape.getPath(), paintShape);
                     } else {
-                        paint.setTextSize(24f);
-                        canvas.drawText(view.text, view.x, view.y, paint);
+                        paint.setTextSize(view.fontSize);
+                        paint.setColor(view.fontColor);
+                        canvas.drawText(view.text, view.xPos, view.yPos, paint);
                     }
                 }
                 // Release canvas
@@ -124,5 +122,12 @@ public class MyView extends SurfaceView {
         this.numberOfPoint = numberOfPoint;
         this.text = "";
     }
+
+    public void setColor(int color) {
+        this.color = color;
+        this.fontColor = color;
+    }
+
+    public int getColor() {return color;}
 }
 
