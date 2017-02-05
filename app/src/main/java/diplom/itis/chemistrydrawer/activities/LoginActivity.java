@@ -3,7 +3,10 @@ package diplom.itis.chemistrydrawer.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,14 +15,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
 import diplom.itis.chemistrydrawer.R;
+import diplom.itis.chemistrydrawer.network.GetRequest;
 import diplom.itis.chemistrydrawer.screens.tasks.TasksListActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
 
 /**
  * Created by denis_000 on 05.11.2016.
  */
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String SAVE_LOGIN = "login";
 
@@ -59,9 +67,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         ed.commit();
     }
 
-    private void loadText() {
+    private String loadText() {
         String savedText = mShared.getString(SAVE_LOGIN, "");
         mText.setText(String.format(getString(R.string.check_user), savedText));
+        return savedText;
     }
 
     private void removeText() {
@@ -77,6 +86,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         return true;
     }
 
+    private void openNewActivity() {
+        Map<String, Object> params = new HashMap<>();
+        if (loadText().length() > 0) {
+            params.put("user", loadText());
+            params.put("password", mPassword.getText().toString());
+        } else {
+            params.put("user", mLogin.getText().toString());
+            params.put("password", mPassword.getText().toString());
+        }
+        GetRequest jsonAsyncTask = new GetRequest("auth",params);
+        jsonAsyncTask.execute();
+        try {
+            if (jsonAsyncTask.get()) {
+                saveText();
+                startActivity(new Intent(LoginActivity.this, TasksListActivity.class));
+                finish();
+            } else {
+                Toast.makeText(LoginActivity.this, R.string.error_auth, Toast.LENGTH_LONG).show();
+            }
+            Log.d("REQUEST", "getRequest " + jsonAsyncTask.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -84,17 +120,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             case R.id.action_accept:
                 if (mShared.getString(SAVE_LOGIN, "").equals("")) {
                     if (mLogin.getText().toString().length() > 0 && mPassword.getText().toString().length() > 0) {
-                        saveText();
-                        startActivity(new Intent(LoginActivity.this, TasksListActivity.class));
-                        finish();
+                        openNewActivity();
                     } else {
                         Toast.makeText(LoginActivity.this, R.string.need_more_info, Toast.LENGTH_LONG).show();
                     }
                 } else {
                     if (mPassword.getText().toString().length() > 0) {
-                        saveText();
-                        startActivity(new Intent(LoginActivity.this, TasksListActivity.class));
-                        finish();
+                        openNewActivity();
                     } else {
                         Toast.makeText(LoginActivity.this, R.string.need_more_info, Toast.LENGTH_LONG).show();
                     }
@@ -119,5 +151,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+
+
+        return true;
     }
 }
