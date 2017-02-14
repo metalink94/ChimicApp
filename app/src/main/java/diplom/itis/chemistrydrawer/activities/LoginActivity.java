@@ -3,9 +3,8 @@ package diplom.itis.chemistrydrawer.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,14 +14,33 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import diplom.itis.chemistrydrawer.R;
+import diplom.itis.chemistrydrawer.models.LogInModel;
+import diplom.itis.chemistrydrawer.network.ApiRequest;
 import diplom.itis.chemistrydrawer.network.GetRequest;
 import diplom.itis.chemistrydrawer.screens.tasks.TasksListActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by denis_000 on 05.11.2016.
@@ -86,31 +104,36 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return true;
     }
 
-    private void openNewActivity() {
-        Map<String, Object> params = new HashMap<>();
-        if (loadText().length() > 0) {
-            params.put("user", loadText());
-            params.put("password", mPassword.getText().toString());
-        } else {
-            params.put("user", mLogin.getText().toString());
-            params.put("password", mPassword.getText().toString());
-        }
-        GetRequest jsonAsyncTask = new GetRequest("auth",params);
-        jsonAsyncTask.execute();
+    private void sendRequest(LogInModel model) {
+        GetRequest getRequest = new GetRequest("auth", model);
+        getRequest.execute();
         try {
-            if (jsonAsyncTask.get()) {
+            if (getRequest.get()) {
                 saveText();
                 startActivity(new Intent(LoginActivity.this, TasksListActivity.class));
                 finish();
             } else {
                 Toast.makeText(LoginActivity.this, R.string.error_auth, Toast.LENGTH_LONG).show();
             }
-            Log.d("REQUEST", "getRequest " + jsonAsyncTask.get());
+            Log.d("REQUEST", "getRequest " + getRequest.get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    private void openNewActivity() {
+        LogInModel logInModel = new LogInModel();
+
+        if (loadText().length() > 0) {
+            logInModel.user = loadText();
+            logInModel.password = mPassword.getText().toString();
+        } else {
+            logInModel.user = mLogin.getText().toString();
+            logInModel.password = mPassword.getText().toString();
+        }
+        sendRequest(logInModel);
     }
 
     @Override
@@ -151,12 +174,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 finish();
                 break;
         }
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-
-
-        return true;
     }
 }

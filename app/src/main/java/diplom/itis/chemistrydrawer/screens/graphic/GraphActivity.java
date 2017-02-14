@@ -1,7 +1,6 @@
 package diplom.itis.chemistrydrawer.screens.graphic;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,22 +10,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
-import diplom.itis.chemistrydrawer.activities.LoginActivity;
-import diplom.itis.chemistrydrawer.screens.tasks.TasksListActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
-import diplom.itis.chemistrydrawer.utils.MyView;
+import diplom.itis.graphlibrary.MyView;
 
 
 /**

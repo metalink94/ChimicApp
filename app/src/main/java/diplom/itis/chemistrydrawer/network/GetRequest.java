@@ -3,20 +3,23 @@ package diplom.itis.chemistrydrawer.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
+import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
 import cz.msebera.android.httpclient.util.EntityUtils;
@@ -30,9 +33,11 @@ public class GetRequest extends AsyncTask<String, Void, Boolean> {
 
     static final String BASE_URL = "https://cimm.kpfu.ru/api/";
     public static final String JSON_TYPE = "application/json";
+    public static final String GET = "GET";
 
     private String mMethod;
     private Map<String, Object> mParams;
+    private String mType = "";
 
 
     public GetRequest() {
@@ -43,6 +48,13 @@ public class GetRequest extends AsyncTask<String, Void, Boolean> {
     public GetRequest(String methodUrl, Map<String, Object> params) {
         mMethod = methodUrl;
         mParams = params;
+    }
+
+    Object model;
+
+    public GetRequest(String auth, Object model) {
+        mMethod = auth;
+        this.model = model;
     }
 
 
@@ -69,6 +81,44 @@ public class GetRequest extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(String... urls) {
+        if (mType.equals(GET)) {
+            return getWithEntity();
+        } else {
+            return postRequest();
+        }
+    }
+
+    protected void onPostExecute(Boolean result) {
+
+    }
+
+    private boolean postRequest() {
+        boolean isResponse = false;
+        try {
+            Gson gson = new Gson();
+            HttpClient httpClient = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(BASE_URL + mMethod);
+            StringEntity postingString = null;
+            postingString = new StringEntity(gson.toJson(model));
+            post.setEntity(postingString);
+            post.setHeader(HTTP.CONTENT_TYPE, JSON_TYPE);
+            HttpResponse response = httpClient.execute(post);
+            int status = response.getStatusLine().getStatusCode();
+            if (status == 200) {
+                String temp = EntityUtils.toString(response.getEntity());
+                Log.i("tagPost", temp);
+                isResponse = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("Http Response:", e.getMessage());
+            isResponse = false;
+        }
+        return isResponse;
+    }
+
+    private boolean getWithEntity() {
+        boolean isResponse = false;
         try {
             HttpGetWithEntity httpGetWithEntity = new HttpGetWithEntity();
             httpGetWithEntity.setURI(URI.create(BASE_URL + mMethod));
@@ -79,17 +129,14 @@ public class GetRequest extends AsyncTask<String, Void, Boolean> {
             int status = response.getStatusLine().getStatusCode();
             if (status == 200) {
                 String temp = EntityUtils.toString(response.getEntity());
-                Log.i("tag", temp);
-                return true;
+                Log.i("tagGet", temp);
+                isResponse = true;
             }
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("Http Response:", e.getMessage());
+            isResponse = false;
         }
-        return false;
-    }
-
-    protected void onPostExecute(Boolean result) {
-
+        return isResponse;
     }
 }

@@ -1,4 +1,4 @@
-package diplom.itis.chemistrydrawer.models;
+package diplom.itis.graphlibrary;
 
 import diplom.itis.chemistrydrawer.R;
 

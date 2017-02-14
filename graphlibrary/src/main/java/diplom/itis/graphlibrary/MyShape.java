@@ -1,6 +1,5 @@
-package diplom.itis.chemistrydrawer.utils;
+package diplom.itis.graphlibrary;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
