@@ -5,18 +5,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import diplom.itis.chemistrydrawer.R;
-import diplom.itis.chemistrydrawer.screens.experiments.ExperimentsActivity;
 import diplom.itis.chemistrydrawer.activities.ProfileActivity;
 import diplom.itis.chemistrydrawer.adapters.BaseAdapter;
 import diplom.itis.chemistrydrawer.models.TaskModel;
+import diplom.itis.chemistrydrawer.network.GetRequest;
+import diplom.itis.chemistrydrawer.screens.experiments.ExperimentsActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
 
 /**
@@ -34,7 +40,16 @@ public class TasksListActivity extends BaseActivity implements View.OnClickListe
         mPresenter = new TaskListPresenter(this);
         mPresenter.setViews();
         mPresenter.getList();
+        GetRequest getRequest = new GetRequest("resources/models");
+        getRequest.execute();
+        try {
+            JSONArray jsonArray = new JSONArray((String)getRequest.get());
+            Log.d("GETLIST", "List size() " + jsonArray.length());
+        } catch (InterruptedException | ExecutionException | JSONException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     public void onClick(View v) {

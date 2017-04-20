@@ -14,9 +14,11 @@ import diplom.itis.chemistrydrawer.models.TaskModel;
 public class TaskListPresenter {
 
     TaskListView mView;
+    TaskListRepository mRepo;
 
     TaskListPresenter(TaskListView view) {
         mView = view;
+        mRepo = new TaskListRepository();
     }
 
     private void setTasks() {
@@ -32,6 +34,7 @@ public class TaskListPresenter {
 
 
     public void getList() {
+        //mRepo.getList();
         setTasks();
     }
 

@@ -5,30 +5,34 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
-import diplom.itis.chemistrydrawer.utils.BaseActivity;
-import diplom.itis.graphlibrary.MyView;
+import diplom.itis.drawer.DrawerDataSender;
+import diplom.itis.drawer.DrawerModel;
+import diplom.itis.drawer.DrawerView;
 
 
 /**
  * Created by Денис on 06.01.2017.
  */
 
-public class GraphActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, GraphView {
+public class GraphActivity extends FragmentActivity implements GraphView, NavigationView.OnNavigationItemSelectedListener, DrawerDataSender {
 
-    private MyView mView;
+    private DrawerView mView;
     private GraphPresenter mPresenter;
 
     private void setNavigation() {
@@ -47,9 +51,20 @@ public class GraphActivity extends BaseActivity implements NavigationView.OnNavi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-        mView = (MyView) findViewById(R.id.view);
+        mView = (DrawerView) findViewById(R.id.view);
+        mView.setCallback(this);
         setNavigation();
         mPresenter = new GraphPresenter(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -80,18 +95,8 @@ public class GraphActivity extends BaseActivity implements NavigationView.OnNavi
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public void setAngles(int i) {
-        mView.setNumberOfPoint(i);
+        mView.setmNumberOfPoints(i);
     }
 
     @Override
@@ -134,5 +139,15 @@ public class GraphActivity extends BaseActivity implements NavigationView.OnNavi
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    @Override
+    public void getListElements(List<DrawerModel> mPointList) {
+        Log.d("ListCallback","ListSize " + mPointList.size());
+    }
+
+    @Override
+    public void getLastModel(DrawerModel drawerModel) {
+
     }
 }

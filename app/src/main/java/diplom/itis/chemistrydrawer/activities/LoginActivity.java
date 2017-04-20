@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,33 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.HttpClient;
-import cz.msebera.android.httpclient.client.methods.HttpPost;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.models.LogInModel;
-import diplom.itis.chemistrydrawer.network.ApiRequest;
 import diplom.itis.chemistrydrawer.network.GetRequest;
 import diplom.itis.chemistrydrawer.screens.tasks.TasksListActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by denis_000 on 05.11.2016.
@@ -108,7 +87,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         GetRequest getRequest = new GetRequest("auth", model);
         getRequest.execute();
         try {
-            if (getRequest.get()) {
+            boolean request = (boolean) getRequest.get();
+            if (request) {
                 saveText();
                 startActivity(new Intent(LoginActivity.this, TasksListActivity.class));
                 finish();

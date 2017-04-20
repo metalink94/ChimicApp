@@ -1,4 +1,4 @@
-package ru.dictionary.graphlibrary;
+package diplom.itis.drawer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("ru.dictionary.graphlibrary.test", appContext.getPackageName());
+        assertEquals("diplom.itis.drawer.test", appContext.getPackageName());
     }
 }

@@ -1,12 +1,10 @@
-package diplom.itis.graphlibrary;
-
-import diplom.itis.chemistrydrawer.R;
+package diplom.itis.drawer;
 
 /**
  * Created by Денис on 29.01.2017.
  */
 
-public class GraphModel {
+public class DrawerModel {
     public int xPos;
     public int yPos;
     public int color;
@@ -17,9 +15,9 @@ public class GraphModel {
     public int fontColor;
     public boolean flag;
 
-    public GraphModel() {}
+    public DrawerModel() {}
 
-    public GraphModel(int xPos, int yPos) {
+    public DrawerModel(int xPos, int yPos) {
         this.xPos = xPos;
         this.yPos = yPos;
         color = R.color.red;
@@ -28,7 +26,7 @@ public class GraphModel {
         radious = 80;
     }
 
-    public GraphModel(int xPos, int yPos, int numberOfPoint, boolean flag) {
+    public DrawerModel(int xPos, int yPos, int numberOfPoint, boolean flag) {
         this.xPos = xPos;
         this.yPos = yPos;
         color = R.color.red;
@@ -38,7 +36,7 @@ public class GraphModel {
         this.flag = flag;
     }
 
-    public GraphModel(int xPos, int yPos, String text, boolean flag) {
+    public DrawerModel(int xPos, int yPos, String text, boolean flag) {
         this.xPos = xPos;
         this.yPos = yPos;
         color = R.color.red;

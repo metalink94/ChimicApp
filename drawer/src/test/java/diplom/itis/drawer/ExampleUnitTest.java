@@ -1,4 +1,4 @@
-package ru.dictionary.graphlibrary;
+package diplom.itis.drawer;
 
 import org.junit.Test;
 

@@ -11,11 +11,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.client.methods.HttpPost;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
@@ -29,7 +31,7 @@ import diplom.itis.chemistrydrawer.utils.HttpGetWithEntity;
  * Created by Денис on 05.02.2017.
  */
 
-public class GetRequest extends AsyncTask<String, Void, Boolean> {
+public class GetRequest extends AsyncTask<String, Void, Object> {
 
     static final String BASE_URL = "https://cimm.kpfu.ru/api/";
     public static final String JSON_TYPE = "application/json";
@@ -38,6 +40,7 @@ public class GetRequest extends AsyncTask<String, Void, Boolean> {
     private String mMethod;
     private Map<String, Object> mParams;
     private String mType = "";
+    private Object mModel;
 
 
     public GetRequest() {
@@ -45,16 +48,19 @@ public class GetRequest extends AsyncTask<String, Void, Boolean> {
         mParams = new HashMap<>();
     }
 
+    public GetRequest(String method) {
+        mMethod = method;
+        mType = GET;
+    }
+
     public GetRequest(String methodUrl, Map<String, Object> params) {
         mMethod = methodUrl;
         mParams = params;
     }
 
-    Object model;
-
     public GetRequest(String auth, Object model) {
         mMethod = auth;
-        this.model = model;
+        this.mModel = model;
     }
 
 
@@ -80,16 +86,38 @@ public class GetRequest extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... urls) {
+    protected Object doInBackground(String... urls) {
         if (mType.equals(GET)) {
-            return getWithEntity();
+            if (mModel != null) {
+                return getWithEntity();
+            } else {
+                return getWithoutEntity();
+            }
         } else {
             return postRequest();
         }
     }
 
-    protected void onPostExecute(Boolean result) {
+    protected void onPostExecute(Object result) {
 
+    }
+
+    private Object getWithoutEntity() {
+        HttpClient client = new DefaultHttpClient();
+        URI website = null;
+        try {
+            website = new URI(BASE_URL + mMethod);
+            HttpGet request = new HttpGet();
+            request.setURI(website);
+            HttpResponse response = client.execute(request);
+            response.getStatusLine().getStatusCode();
+            String resp = EntityUtils.toString(response.getEntity());
+            Log.d("GETREQUEST", "Response " + resp);
+            return resp;
+        } catch (URISyntaxException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private boolean postRequest() {
@@ -99,7 +127,7 @@ public class GetRequest extends AsyncTask<String, Void, Boolean> {
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpPost post = new HttpPost(BASE_URL + mMethod);
             StringEntity postingString = null;
-            postingString = new StringEntity(gson.toJson(model));
+            postingString = new StringEntity(gson.toJson(mModel));
             post.setEntity(postingString);
             post.setHeader(HTTP.CONTENT_TYPE, JSON_TYPE);
             HttpResponse response = httpClient.execute(post);
