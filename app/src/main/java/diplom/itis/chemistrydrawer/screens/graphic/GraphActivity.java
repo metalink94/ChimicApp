@@ -12,8 +12,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import org.parceler.Parcels;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,6 +25,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
+import diplom.itis.chemistrydrawer.activities.LoginActivity;
+import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.drawer.DrawerDataSender;
 import diplom.itis.drawer.DrawerModel;
 import diplom.itis.drawer.DrawerView;
@@ -30,10 +36,14 @@ import diplom.itis.drawer.DrawerView;
  * Created by Денис on 06.01.2017.
  */
 
-public class GraphActivity extends FragmentActivity implements GraphView, NavigationView.OnNavigationItemSelectedListener, DrawerDataSender {
+public class GraphActivity extends FragmentActivity implements GraphView,
+        NavigationView.OnNavigationItemSelectedListener,
+        DrawerDataSender {
 
+    public static final String KEY_MODEL = "key_model";
     private DrawerView mView;
     private GraphPresenter mPresenter;
+    private CreateExperimentsModel mModel;
 
     private void setNavigation() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -55,6 +65,9 @@ public class GraphActivity extends FragmentActivity implements GraphView, Naviga
         mView.setCallback(this);
         setNavigation();
         mPresenter = new GraphPresenter(this);
+        if (getIntent().hasExtra(KEY_MODEL)) {
+            mModel = Parcels.unwrap(getIntent().getParcelableExtra(KEY_MODEL));
+        }
     }
 
     @Override
@@ -86,9 +99,8 @@ public class GraphActivity extends FragmentActivity implements GraphView, Naviga
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (id == R.id.nav_send) {
-
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -142,8 +154,32 @@ public class GraphActivity extends FragmentActivity implements GraphView, Naviga
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_accept:
+
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    @Override
     public void getListElements(List<DrawerModel> mPointList) {
         Log.d("ListCallback","ListSize " + mPointList.size());
+        mModel.addElements(mPointList);
     }
 
     @Override

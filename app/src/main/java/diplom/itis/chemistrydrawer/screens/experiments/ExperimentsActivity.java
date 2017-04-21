@@ -18,6 +18,8 @@ import diplom.itis.chemistrydrawer.activities.WebViewActivity;
 import diplom.itis.chemistrydrawer.adapters.BaseAdapter;
 import diplom.itis.chemistrydrawer.models.ExperimentsModel;
 import diplom.itis.chemistrydrawer.models.TaskModel;
+import diplom.itis.chemistrydrawer.screens.addExperements.AddExperementsActivity;
+import diplom.itis.chemistrydrawer.screens.addExperements.AddExperimentsView;
 import diplom.itis.chemistrydrawer.screens.graphic.GraphActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
 
@@ -45,7 +47,7 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                startActivity(new Intent(ExperimentsActivity.this, WebViewActivity.class));
+                startActivity(new Intent(ExperimentsActivity.this, AddExperementsActivity.class));
                 break;
             case R.id.taplayout:
                 startActivity(new Intent(ExperimentsActivity.this, GraphActivity.class));

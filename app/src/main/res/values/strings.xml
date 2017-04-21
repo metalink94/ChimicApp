@@ -11,4 +11,7 @@
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
     <string name="error_auth">Вы ввели неправильный пароль или логин</string>
+    <string name="add_experiment">Название эксперимента</string>
+    <string name="add_description">Описание эксперимента</string>
+    <string name="need_all_info">Необходимо заполнить все поля, для продолжения</string>
 </resources>

@@ -6,18 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import diplom.itis.chemistrydrawer.models.TaskModel;
+import diplom.itis.chemistrydrawer.utils.Presenter;
 
 /**
  * Created by Денис on 15.01.2017.
  */
 
-public class TaskListPresenter {
+public class TaskListPresenter extends Presenter<TaskListView> {
 
-    TaskListView mView;
     TaskListRepository mRepo;
 
     TaskListPresenter(TaskListView view) {
-        mView = view;
+        setView(view);
         mRepo = new TaskListRepository();
     }
 
@@ -29,7 +29,7 @@ public class TaskListPresenter {
             taskModels.add(model);
         }
         Log.d(getClass().getName(), "Get List size() = "+ taskModels.size());
-        mView.showTasks(taskModels);
+        getView().showTasks(taskModels);
     }
 
 
@@ -39,6 +39,6 @@ public class TaskListPresenter {
     }
 
     public void setViews() {
-        mView.showView();
+        getView().showView();
     }
 }

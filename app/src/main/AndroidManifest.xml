@@ -59,6 +59,10 @@
             android:theme="@style/NoActionBar">
 
         </activity>
+
+        <activity android:name=".screens.addExperements.AddExperementsActivity"
+                  android:label="@string/app_name"
+                  android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

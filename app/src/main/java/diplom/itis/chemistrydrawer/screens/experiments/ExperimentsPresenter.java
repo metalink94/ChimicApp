@@ -4,29 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import diplom.itis.chemistrydrawer.models.ExperimentsModel;
+import diplom.itis.chemistrydrawer.utils.Presenter;
 
 /**
  * Created by Денис on 15.01.2017.
  */
 
-public class ExperimentsPresenter {
-
-    ExperimentsView mView;
+public class ExperimentsPresenter extends Presenter<ExperimentsView> {
 
     ExperimentsPresenter(ExperimentsView view) {
-        mView = view;
+        setView(view);
     }
 
     void getList() {
-        mView.showList(setExperiments());
+        getView().showList(new ArrayList<ExperimentsModel>());
     }
 
     void setActionBar() {
-        mView.showActionBar();
+        getView().showActionBar();
     }
 
     void setViews() {
-        mView.showViews();
+        getView().showViews();
     }
 
     private List<ExperimentsModel> setExperiments() {

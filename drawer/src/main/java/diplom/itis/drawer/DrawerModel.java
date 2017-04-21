@@ -1,9 +1,11 @@
 package diplom.itis.drawer;
 
+import org.parceler.Parcel;
+
 /**
  * Created by Денис on 29.01.2017.
  */
-
+@Parcel
 public class DrawerModel {
     public int xPos;
     public int yPos;

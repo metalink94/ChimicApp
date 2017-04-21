@@ -6,29 +6,29 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import diplom.itis.chemistrydrawer.utils.Presenter;
+
 /**
  * Created by Денис on 15.01.2017.
  */
 
-public class GraphPresenter {
-
-    GraphView mView;
+public class GraphPresenter extends Presenter<GraphView> {
 
     GraphPresenter(GraphView view) {
-        mView = view;
+        setView(view);
     }
 
 
     public void setAngles(int i) {
-        mView.setAngles(i);
+        getView().setAngles(i);
     }
 
     public void setAlertDialog(BufferedReader bufferedReader) {
-        mView.showAlertDialog(readFile(bufferedReader));
+        getView().showAlertDialog(readFile(bufferedReader));
     }
 
     public void setAlertDialog(String[] colors) {
-        mView.showAlertDialogColor(colors);
+        getView().showAlertDialogColor(colors);
     }
 
     private String[] readFile(BufferedReader bufferedReader) {
