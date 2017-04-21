@@ -1,5 +1,6 @@
 package diplom.itis.chemistrydrawer.screens.graphic;
 
+import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.chemistrydrawer.utils.BaseView;
 
 /**
@@ -12,4 +13,8 @@ public interface GraphView extends BaseView {
     void showAlertDialog(String[] arrayList);
 
     void showAlertDialogColor(String[] colors);
+
+    void showAcceptDialog();
+
+    void saveAndCloseActivity(CreateExperimentsModel aModel);
 }

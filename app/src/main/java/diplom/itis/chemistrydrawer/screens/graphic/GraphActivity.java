@@ -1,11 +1,11 @@
 package diplom.itis.chemistrydrawer.screens.graphic;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,8 +25,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
-import diplom.itis.chemistrydrawer.activities.LoginActivity;
 import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
+import diplom.itis.chemistrydrawer.utils.BaseActivity;
 import diplom.itis.drawer.DrawerDataSender;
 import diplom.itis.drawer.DrawerModel;
 import diplom.itis.drawer.DrawerView;
@@ -36,7 +36,7 @@ import diplom.itis.drawer.DrawerView;
  * Created by Денис on 06.01.2017.
  */
 
-public class GraphActivity extends FragmentActivity implements GraphView,
+public class GraphActivity extends BaseActivity implements GraphView,
         NavigationView.OnNavigationItemSelectedListener,
         DrawerDataSender {
 
@@ -48,6 +48,8 @@ public class GraphActivity extends FragmentActivity implements GraphView,
     private void setNavigation() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("ChartActivity");
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -154,6 +156,37 @@ public class GraphActivity extends FragmentActivity implements GraphView,
     }
 
     @Override
+    public void showAcceptDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Сохранение")
+                .setMessage("Вы уверены, что хотите сохранить данный эксперимент и отправить его на проверку?")
+                .setCancelable(false)
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface aDialogInterface, int aI) {
+
+            }
+        })
+        .setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface aDialogInterface, int aI) {
+                mPresenter.saveExperiment(mModel);
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    @Override
+    public void saveAndCloseActivity(CreateExperimentsModel aModel) {
+        Intent intent = new Intent();
+        intent.putExtra(KEY_MODEL, Parcels.wrap(aModel));
+        setResult(100, intent);
+        finish();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_login, menu);
@@ -165,7 +198,7 @@ public class GraphActivity extends FragmentActivity implements GraphView,
         switch (item.getItemId()) {
 
             case R.id.action_accept:
-
+                mPresenter.setAcceptDialog();
                 return true;
 
             default:

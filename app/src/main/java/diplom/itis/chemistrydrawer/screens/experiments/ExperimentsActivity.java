@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -23,10 +24,14 @@ import diplom.itis.chemistrydrawer.screens.addExperements.AddExperimentsView;
 import diplom.itis.chemistrydrawer.screens.graphic.GraphActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
 
+import static diplom.itis.chemistrydrawer.screens.graphic.GraphActivity.KEY_MODEL;
+
 /**
  * Created by denis_000 on 06.11.2016.
  */
 public class ExperimentsActivity extends BaseActivity implements View.OnClickListener, ExperimentsView{
+
+    final int REQUEST_CODE_DATA = 1;
 
     private RecyclerView mExperimentsList;
     private FloatingActionButton mFab;
@@ -47,10 +52,10 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                startActivity(new Intent(ExperimentsActivity.this, AddExperementsActivity.class));
+                startActivityForResult(new Intent(ExperimentsActivity.this, AddExperementsActivity.class), REQUEST_CODE_DATA);
                 break;
             case R.id.taplayout:
-                startActivity(new Intent(ExperimentsActivity.this, GraphActivity.class));
+                startActivityForResult(new Intent(ExperimentsActivity.this, GraphActivity.class), REQUEST_CODE_DATA);
                 break;
         }
     }
@@ -67,6 +72,12 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
         }
 
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(ExperimentsActivity.class.getName(), "requestCode = " + requestCode + " resultColde = " + resultCode);
     }
 
     @Override

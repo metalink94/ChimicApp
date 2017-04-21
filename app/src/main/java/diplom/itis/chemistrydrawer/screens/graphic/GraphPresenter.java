@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.chemistrydrawer.utils.Presenter;
 
 /**
@@ -55,5 +56,13 @@ public class GraphPresenter extends Presenter<GraphView> {
         }
         String[] tempsArray = temps.toArray(new String[0]);
         return tempsArray;
+    }
+
+    public void setAcceptDialog() {
+        getView().showAcceptDialog();
+    }
+
+    public void saveExperiment(CreateExperimentsModel aModel) {
+        getView().saveAndCloseActivity(aModel);
     }
 }

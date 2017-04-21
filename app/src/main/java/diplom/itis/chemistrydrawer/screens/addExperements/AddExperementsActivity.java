@@ -24,6 +24,7 @@ import diplom.itis.chemistrydrawer.utils.BaseActivity;
 
 public class AddExperementsActivity extends BaseActivity implements AddExperimentsView, View.OnClickListener {
 
+    private static final int REQUEST_CODE_DATA = 1;
     @BindView(R.id.et_name)
     EditText mName;
     @BindView(R.id.et_description)
@@ -55,7 +56,8 @@ public class AddExperementsActivity extends BaseActivity implements AddExperimen
 
     @Override
     public void sendModel(CreateExperimentsModel aCreateExperimentsModel) {
-        startActivity(new Intent(this, GraphActivity.class).putExtra(GraphActivity.KEY_MODEL, Parcels.wrap(aCreateExperimentsModel)));
+        startActivityForResult(new Intent(this, GraphActivity.class).putExtra(GraphActivity.KEY_MODEL, Parcels.wrap(aCreateExperimentsModel)), REQUEST_CODE_DATA);
+        finish();
     }
 
     @Override
