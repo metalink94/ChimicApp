@@ -6,6 +6,7 @@ import android.webkit.WebViewClient;
 
 import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
+import diplom.itis.chemistrydrawer.utils.WebAppInterface;
 
 /**
  * Created by denis_000 on 06.12.2016.
@@ -22,8 +23,9 @@ public class WebViewActivity extends BaseActivity{
         mWebView.setWebViewClient(new MyWebViewClient());
         // включаем поддержку JavaScript
         mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
         // указываем страницу загрузки
-        mWebView.loadUrl("https://cimm.kpfu.ru/predictor");
+        mWebView.loadUrl("file:///android_asset/editorws.html");
     }
 
     private class MyWebViewClient extends WebViewClient

@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
@@ -19,12 +18,8 @@ import diplom.itis.chemistrydrawer.activities.WebViewActivity;
 import diplom.itis.chemistrydrawer.adapters.BaseAdapter;
 import diplom.itis.chemistrydrawer.models.ExperimentsModel;
 import diplom.itis.chemistrydrawer.models.TaskModel;
-import diplom.itis.chemistrydrawer.screens.addExperements.AddExperementsActivity;
-import diplom.itis.chemistrydrawer.screens.addExperements.AddExperimentsView;
 import diplom.itis.chemistrydrawer.screens.graphic.GraphActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
-
-import static diplom.itis.chemistrydrawer.screens.graphic.GraphActivity.KEY_MODEL;
 
 /**
  * Created by denis_000 on 06.11.2016.
@@ -52,7 +47,7 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                startActivityForResult(new Intent(ExperimentsActivity.this, AddExperementsActivity.class), REQUEST_CODE_DATA);
+                startActivity(new Intent(ExperimentsActivity.this, WebViewActivity.class));
                 break;
             case R.id.taplayout:
                 startActivityForResult(new Intent(ExperimentsActivity.this, GraphActivity.class), REQUEST_CODE_DATA);

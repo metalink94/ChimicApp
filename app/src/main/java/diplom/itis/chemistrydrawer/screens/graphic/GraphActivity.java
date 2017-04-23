@@ -212,7 +212,7 @@ public class GraphActivity extends BaseActivity implements GraphView,
     @Override
     public void getListElements(List<DrawerModel> mPointList) {
         Log.d("ListCallback","ListSize " + mPointList.size());
-        mModel.addElements(mPointList);
+        //mModel.addElements(mPointList);
     }
 
     @Override
