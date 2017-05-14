@@ -13,13 +13,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.concurrent.ExecutionException;
+import java.io.IOException;
 
 import diplom.itis.chemistrydrawer.R;
-import diplom.itis.chemistrydrawer.models.LogInModel;
-import diplom.itis.chemistrydrawer.network.GetRequest;
+import diplom.itis.chemistrydrawer.models.api.LogInModel;
 import diplom.itis.chemistrydrawer.screens.tasks.TasksListActivity;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
+import okhttp3.Call;
+import okhttp3.Response;
+
+import static diplom.itis.chemistrydrawer.network.IMethods.POST_AUTH;
 
 /**
  * Created by denis_000 on 05.11.2016.
@@ -83,23 +86,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         return true;
     }
 
+    @Override
+    public void onResponse(Call call, Response response) throws IOException {
+        super.onResponse(call, response);
+        if (response.isSuccessful()) {
+            hideProgressDialog();
+            saveText();
+            startActivity(new Intent(LoginActivity.this, TasksListActivity.class));
+            finish();
+            String responseStr = response.body().string();
+            Log.d(getClass().getSimpleName(), "Response " + responseStr);
+        } else {
+            Toast.makeText(LoginActivity.this, R.string.error_auth, Toast.LENGTH_LONG).show();
+        }
+    }
+
+
     private void sendRequest(LogInModel model) {
-        GetRequest getRequest = new GetRequest("auth", model);
-        getRequest.execute();
-        try {
-            boolean request = (boolean) getRequest.get();
-            if (request) {
-                saveText();
-                startActivity(new Intent(LoginActivity.this, TasksListActivity.class));
-                finish();
-            } else {
-                Toast.makeText(LoginActivity.this, R.string.error_auth, Toast.LENGTH_LONG).show();
-            }
-            Log.d("REQUEST", "getRequest " + getRequest.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        showProgressDialog();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            mNetworkWorker.postRequest(POST_AUTH, model, this);
         }
     }
 
@@ -154,5 +160,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onFailure(Call call, IOException e) {
+        super.onFailure(call, e);
+        Log.d(getClass().getSimpleName(), e.getMessage());
+        Toast.makeText(LoginActivity.this, R.string.error_auth, Toast.LENGTH_LONG).show();
     }
 }

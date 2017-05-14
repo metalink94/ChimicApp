@@ -1,41 +1,110 @@
 package diplom.itis.chemistrydrawer.activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import org.parceler.Parcels;
 
 import diplom.itis.chemistrydrawer.R;
+import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
-import diplom.itis.chemistrydrawer.utils.WebAppInterface;
+import diplom.itis.chemistrydrawer.utils.MarvinView;
+import imangazaliev.scripto.ScriptoException;
+import imangazaliev.scripto.js.JavaScriptCallErrorCallback;
+import imangazaliev.scripto.js.JavaScriptCallResponseCallback;
 
 /**
  * Created by denis_000 on 06.12.2016.
  */
 public class WebViewActivity extends BaseActivity{
 
-    private WebView mWebView;
+    private MarvinView mWebView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview);
 
-        mWebView = (WebView) findViewById(R.id.webView);
-        mWebView.setWebViewClient(new MyWebViewClient());
-        // включаем поддержку JavaScript
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
-        // указываем страницу загрузки
-        mWebView.loadUrl("file:///android_asset/editorws.html");
+        mWebView = (MarvinView) findViewById(R.id.marvin);
     }
 
-    private class MyWebViewClient extends WebViewClient
-    {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url)
-        {
-            view.loadUrl(url);
-            return true;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_login, menu);
+        return true;
+    }
+
+    private void createDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(WebViewActivity.this);
+        alertDialog.setTitle("Сохранение");
+        alertDialog.setMessage("Название эксперимента");
+
+        final EditText input = new EditText(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+
+        alertDialog.setPositiveButton("Сохранить",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveExperiment(input.getText().toString());
+                    }
+                });
+
+        alertDialog.setNegativeButton("Отмена",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    public static final String KEY_MODEL = "key_model";
+
+    private void saveExperiment(String name) {
+        Intent intent = new Intent();
+        CreateExperimentsModel model = new CreateExperimentsModel();
+        model.name = name;
+        model.description = "New model";
+        intent.putExtra(KEY_MODEL, Parcels.wrap(model));
+        setResult(100, intent);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_accept:
+                createDialog();
+                Log.d(this.getClass().getName(), "Click");
+                mWebView.loadUrl("javascript:marvin.ImageExporter()");
+                mWebView.getTest().getTest().onResponse(new JavaScriptCallResponseCallback<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(getClass().getSimpleName(), "Response " + response);
+                    }
+                });
+                mWebView.getTest().getTest().onError(new JavaScriptCallErrorCallback() {
+                    @Override
+                    public void onError(ScriptoException error) {
+                        Log.d(getClass().getSimpleName(), "ScriptoException " + error.getMessage());
+                    }
+                });
+                Log.d(this.getClass().getName(), "Click");
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

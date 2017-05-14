@@ -11,11 +11,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.activities.WebViewActivity;
 import diplom.itis.chemistrydrawer.adapters.BaseAdapter;
+import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.chemistrydrawer.models.ExperimentsModel;
 import diplom.itis.chemistrydrawer.models.TaskModel;
 import diplom.itis.chemistrydrawer.screens.graphic.GraphActivity;
@@ -47,7 +50,7 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                startActivity(new Intent(ExperimentsActivity.this, WebViewActivity.class));
+                startActivityForResult(new Intent(ExperimentsActivity.this, WebViewActivity.class), REQUEST_CODE_DATA);
                 break;
             case R.id.taplayout:
                 startActivityForResult(new Intent(ExperimentsActivity.this, GraphActivity.class), REQUEST_CODE_DATA);
@@ -72,7 +75,12 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(ExperimentsActivity.class.getName(), "requestCode = " + requestCode + " resultColde = " + resultCode);
+        Log.d(ExperimentsActivity.class.getSimpleName(), "requestCode = " + requestCode + " resultColde = " + resultCode);
+        if (requestCode == REQUEST_CODE_DATA) {
+            CreateExperimentsModel model = Parcels.unwrap(data.getParcelableExtra(WebViewActivity.KEY_MODEL));
+            mAdapter.addItem(model);
+        }
+
     }
 
     @Override

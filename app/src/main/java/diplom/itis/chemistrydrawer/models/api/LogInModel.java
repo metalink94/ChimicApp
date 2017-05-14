@@ -1,4 +1,4 @@
-package diplom.itis.chemistrydrawer.models;
+package diplom.itis.chemistrydrawer.models.api;
 
 /**
  * Created by Денис on 11.02.2017.

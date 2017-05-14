@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
+import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.chemistrydrawer.models.ExperimentsModel;
 import diplom.itis.chemistrydrawer.models.TaskModel;
 
@@ -23,6 +24,7 @@ public class BaseAdapter extends RecyclerView.Adapter {
 
     public static final int TASK_TYPE = 1;
     public static final int EXPERIMENT_TYPE = 2;
+    public static final int CREATE_EXPERIMENT_TYPE = 3;
 
     private View.OnClickListener mOnClickListener;
     protected List<Object> mList;
@@ -48,6 +50,9 @@ public class BaseAdapter extends RecyclerView.Adapter {
         if (mList.get(position) instanceof ExperimentsModel) {
             return EXPERIMENT_TYPE;
         }
+        if (mList.get(position) instanceof CreateExperimentsModel) {
+            return CREATE_EXPERIMENT_TYPE;
+        }
         return super.getItemViewType(position);
     }
 
@@ -59,6 +64,10 @@ public class BaseAdapter extends RecyclerView.Adapter {
                         .inflate(R.layout.row_task, parent, false);
                 return new TaskHolder(v);
             case EXPERIMENT_TYPE:
+                v = LayoutInflater.from(mContext)
+                        .inflate(R.layout.row_experiments, parent, false);
+                return new ExperimentHolder(v);
+            case CREATE_EXPERIMENT_TYPE:
                 v = LayoutInflater.from(mContext)
                         .inflate(R.layout.row_experiments, parent, false);
                 return new ExperimentHolder(v);
@@ -75,6 +84,7 @@ public class BaseAdapter extends RecyclerView.Adapter {
             taskHolder.title.setText(taskModel.title);
             taskHolder.description.setText(taskModel.description);
             taskHolder.setOnClickListener(mOnClickListener, taskModel);
+            return;
         }
         if (item instanceof ExperimentsModel) {
             final ExperimentsModel experimentsModel = (ExperimentsModel) item;
@@ -87,6 +97,16 @@ public class BaseAdapter extends RecyclerView.Adapter {
                 experimentHolder.iconStatus.setImageResource(R.drawable.ic_highlight_off_black_24px);
             }
             experimentHolder.setOnClickListener(mOnClickListener, experimentsModel);
+            return;
+        }
+        if (item instanceof CreateExperimentsModel) {
+            final CreateExperimentsModel experimentsModel = (CreateExperimentsModel) item;
+            final ExperimentHolder experimentHolder = (ExperimentHolder) holder;
+            experimentHolder.title.setText(experimentsModel.name);
+            experimentHolder.description.setText(experimentsModel.description);
+            experimentHolder.iconStatus.setImageResource(R.drawable.ic_done_black_24px);
+            experimentHolder.setOnClickListener(mOnClickListener, experimentsModel);
+            return;
         }
         
     }

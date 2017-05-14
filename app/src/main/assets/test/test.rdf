@@ -1,0 +1,10 @@
+$DTYPE additive.amount.1
+$DATUM water = .4
+$DTYPE temperature
+$DATUM 298
+$DTYPE pressure
+$DATUM 0.9
+$DTYPE additive.2
+$DATUM DMSO
+$DTYPE amount.2
+$DATUM 0.6
