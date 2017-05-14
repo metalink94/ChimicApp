@@ -1,4 +1,4 @@
-package diplom.itis.chemistrydrawer.utils;
+package ru.diplom.itis.chimicdrawer;
 
 import android.content.Context;
 import android.util.Log;

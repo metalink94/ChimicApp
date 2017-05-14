@@ -16,10 +16,7 @@ import org.parceler.Parcels;
 import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
-import diplom.itis.chemistrydrawer.utils.MarvinView;
-import imangazaliev.scripto.ScriptoException;
-import imangazaliev.scripto.js.JavaScriptCallErrorCallback;
-import imangazaliev.scripto.js.JavaScriptCallResponseCallback;
+import ru.diplom.itis.chimicdrawer.MarvinView;
 
 /**
  * Created by denis_000 on 06.12.2016.
@@ -89,18 +86,6 @@ public class WebViewActivity extends BaseActivity{
                 createDialog();
                 Log.d(this.getClass().getName(), "Click");
                 mWebView.loadUrl("javascript:marvin.ImageExporter()");
-                mWebView.getTest().getTest().onResponse(new JavaScriptCallResponseCallback<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d(getClass().getSimpleName(), "Response " + response);
-                    }
-                });
-                mWebView.getTest().getTest().onError(new JavaScriptCallErrorCallback() {
-                    @Override
-                    public void onError(ScriptoException error) {
-                        Log.d(getClass().getSimpleName(), "ScriptoException " + error.getMessage());
-                    }
-                });
                 Log.d(this.getClass().getName(), "Click");
                 break;
         }
