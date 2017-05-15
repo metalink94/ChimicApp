@@ -10,7 +10,7 @@ import android.webkit.JavascriptInterface;
 
 public class WebAppInterface {
     Context mContext;
-    String data;
+    Object data;
 
     public WebAppInterface(Context ctx){
         this.mContext=ctx;
@@ -18,7 +18,7 @@ public class WebAppInterface {
 
 
     @JavascriptInterface
-    public void sendData(String data) {
+    public void getMarvinStructure(Object data) {
         //Get the string value to process
         Log.d("SendData", "send data from JS: " + data);
         this.data=data;

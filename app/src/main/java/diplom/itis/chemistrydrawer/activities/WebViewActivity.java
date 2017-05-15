@@ -85,7 +85,7 @@ public class WebViewActivity extends BaseActivity{
             case R.id.action_accept:
                 createDialog();
                 Log.d(this.getClass().getName(), "Click");
-                mWebView.loadUrl("javascript:marvin.ImageExporter()");
+                mWebView.getData();
                 Log.d(this.getClass().getName(), "Click");
                 break;
         }

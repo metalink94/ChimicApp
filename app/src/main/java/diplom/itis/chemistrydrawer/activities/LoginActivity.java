@@ -90,7 +90,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onResponse(Call call, Response response) throws IOException {
         super.onResponse(call, response);
         if (response.isSuccessful()) {
-            hideProgressDialog();
             saveText();
             startActivity(new Intent(LoginActivity.this, TasksListActivity.class));
             finish();
@@ -99,19 +98,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else {
             Toast.makeText(LoginActivity.this, R.string.error_auth, Toast.LENGTH_LONG).show();
         }
+        hideProgressDialog();
     }
 
 
     private void sendRequest(LogInModel model) {
-        showProgressDialog();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             mNetworkWorker.postRequest(POST_AUTH, model, this);
         }
     }
 
     private void openNewActivity() {
+        showProgressDialog();
         LogInModel logInModel = new LogInModel();
-
         if (loadText().length() > 0) {
             logInModel.user = loadText();
             logInModel.password = mPassword.getText().toString();

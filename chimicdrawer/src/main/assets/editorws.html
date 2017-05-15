@@ -14,7 +14,6 @@
 	window.addEventListener("message", function(event) {
 		try {
 			var externalCall = JSON.parse(event.data);
-			Android.sendData(externalCall);
 			marvin.onReady(function() {
 				marvin.sketcherInstance[externalCall.method].apply(marvin.sketcherInstance, externalCall.args);
 			});
@@ -22,18 +21,7 @@
 			console.log(e);
 		}
 	}, false);
-	
-	// called when Marvin JS loaded
-	function sendData() {
-	    Scripto.call('Preferences', 'Some Data');
-	}
-	var x ="";
-	function setTest() {
-	    x = "Test";
-	}
-	function getTest() {
-	    return x;
-	}
+
 	function sketchOnLoad() {
 		if(marvin.Sketch.isSupported()) {
 			marvin.sketcherInstance = new marvin.Sketch("sketch");
@@ -52,6 +40,13 @@
             application to display correctly.</p>
     </div>
 </noscript>
-<div id="sketch"></div>
+<div id="sketch">
+    <script>
+        function getMarvinStructure() {
+            window.android.getMarvinStructure(marvin.sketcherInstance.exportStructure("mrv"));
+            return marvin.sketcherInstance.exportStructure("mrv");
+        }
+    </script>
+</div>
 </body>
 </html>
