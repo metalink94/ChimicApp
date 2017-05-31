@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ru.diplom.itis.chimicdrawer.MarvinView
+    <ru.diplom.itis.chimicdrawer.MarvinKotlinView
         android:id="@+id/marvin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

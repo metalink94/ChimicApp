@@ -16,20 +16,20 @@ import org.parceler.Parcels;
 import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
-import ru.diplom.itis.chimicdrawer.MarvinView;
+import ru.diplom.itis.chimicdrawer.MarvinKotlinView;
 
 /**
  * Created by denis_000 on 06.12.2016.
  */
 public class WebViewActivity extends BaseActivity{
 
-    private MarvinView mWebView;
+    private MarvinKotlinView mWebView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview);
 
-        mWebView = (MarvinView) findViewById(R.id.marvin);
+        mWebView = (MarvinKotlinView) findViewById(R.id.marvin);
     }
 
     @Override

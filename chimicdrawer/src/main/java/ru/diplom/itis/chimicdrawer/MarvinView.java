@@ -73,6 +73,7 @@ public class MarvinView extends WebView {
         }
     }
 
+
     private class MyWebViewClient extends WebViewClient
     {
         @Override
@@ -95,6 +96,7 @@ public class MarvinView extends WebView {
             mWebView.evaluateJavascript("(function() { return getMarvinStructure();})();", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String aS) {
+                    Log.d(this.getClass().getSimpleName(), aS);
                 }
             });
         }
