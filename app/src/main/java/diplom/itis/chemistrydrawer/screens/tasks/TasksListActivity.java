@@ -12,6 +12,8 @@ import android.view.View;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.activities.ProfileActivity;
 import diplom.itis.chemistrydrawer.adapters.BaseAdapter;
@@ -24,6 +26,7 @@ import diplom.itis.chemistrydrawer.utils.BaseActivity;
  */
 public class TasksListActivity extends BaseActivity implements View.OnClickListener, TaskListView{
 
+    @BindView(R.id.tasks_list)
     private RecyclerView mTasksList;
     private TaskListPresenter mPresenter;
 
@@ -31,9 +34,8 @@ public class TasksListActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
+        ButterKnife.bind(this);
         mPresenter = new TaskListPresenter(this, mNetworkWorker);
-        mPresenter.setViews();
-        mPresenter.getAdditives();
     }
 
 
@@ -80,7 +82,6 @@ public class TasksListActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void showView() {
-        mTasksList = (RecyclerView) findViewById(R.id.tasks_list);
         mTasksList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         mTasksList.setLayoutManager(llm);

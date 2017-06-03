@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,6 +12,8 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.models.api.LogInModel;
 import diplom.itis.chemistrydrawer.screens.tasks.TasksListActivity;
@@ -31,16 +30,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     public static final String SAVE_LOGIN = "login";
 
-    private EditText mLogin;
-    private EditText mPassword;
-    private TextView mText;
+    @BindView(R.id.et_login)
+    EditText mLogin;
+    @BindView(R.id.et_password)
+    EditText mPassword;
+    @BindView(R.id.tv_check_login)
+    TextView mText;
+    @BindView(R.id.login_btn)
+    TextView mButton;
     private SharedPreferences mShared;
 
     private void setViews() {
-        mLogin = (EditText) findViewById(R.id.et_login);
-        mPassword = (EditText) findViewById(R.id.et_password);
-        mText = (TextView) findViewById(R.id.tv_check_login);
+        ButterKnife.bind(this);
         mShared = getPreferences(MODE_PRIVATE);
+        mButton.setOnClickListener(this);
     }
 
     @Override
@@ -64,7 +67,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void saveText() {
         SharedPreferences.Editor ed = mShared.edit();
         ed.putString(SAVE_LOGIN, mLogin.getText().toString());
-        ed.commit();
+        ed.apply();
     }
 
     private String loadText() {
@@ -76,19 +79,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void removeText() {
         SharedPreferences.Editor ed = mShared.edit();
         ed.putString(SAVE_LOGIN, "");
-        ed.commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_login, menu);
-        return true;
+        ed.apply();
     }
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
         super.onResponse(call, response);
+        hideProgressDialog();
         if (response.isSuccessful()) {
             saveText();
             startActivity(new Intent(LoginActivity.this, TasksListActivity.class));
@@ -98,7 +95,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } else {
             Toast.makeText(LoginActivity.this, R.string.error_auth, Toast.LENGTH_LONG).show();
         }
-        hideProgressDialog();
     }
 
 
@@ -122,10 +118,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public void onClick(View v) {
+        switch (v.getId()) {
 
-            case R.id.action_accept:
+            case R.id.tv_change_user:
+                removeText();
+                startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+                finish();
+                break;
+            case R.id.login_btn:
                 if (mShared.getString(SAVE_LOGIN, "").equals("")) {
                     if (mLogin.getText().toString().length() > 0 && mPassword.getText().toString().length() > 0) {
                         openNewActivity();
@@ -139,24 +140,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         Toast.makeText(LoginActivity.this, R.string.need_more_info, Toast.LENGTH_LONG).show();
                     }
                 }
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.tv_change_user:
-                removeText();
-                startActivity(new Intent(LoginActivity.this, LoginActivity.class));
-                finish();
                 break;
         }
     }
@@ -164,7 +147,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onFailure(Call call, IOException e) {
         super.onFailure(call, e);
-        Log.d(getClass().getSimpleName(), e.getMessage());
-        Toast.makeText(LoginActivity.this, R.string.error_auth, Toast.LENGTH_LONG).show();
+        //        Toast.makeText(LoginActivity.this, R.string.error_auth, Toast.LENGTH_LONG).show();
+        Log.e(getClass().getSimpleName(), e.getMessage());
+
     }
 }

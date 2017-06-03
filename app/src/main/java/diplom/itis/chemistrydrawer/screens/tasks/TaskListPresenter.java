@@ -23,6 +23,8 @@ public class TaskListPresenter extends Presenter<TaskListView> implements TaskLi
         setView(view);
         mRepo = new TaskListRepository(mNetworkWorker);
         mRepo.setCallback(this);
+        setViews();
+        getAdditives();
     }
 
     private void setTasks() {

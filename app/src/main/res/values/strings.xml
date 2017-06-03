@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChemistryDrawer</string>
+    <string name="app_name">Мобильный ассистент</string>
     <string name="action_settings">Настройки</string>
     <string name="login_hint">Имя пользователя:</string>
     <string name="password_hint">Пароль</string>
@@ -14,4 +14,13 @@
     <string name="add_experiment">Название эксперимента</string>
     <string name="add_description">Описание эксперимента</string>
     <string name="need_all_info">Необходимо заполнить все поля, для продолжения</string>
+
+    <string-array name="task_titles">
+        <item>Рассчитать стандартную энтальпию и стандартную энтропию химической реакции.</item>
+        <item>Вычислите тепловой эффект реакции восстановления оксида железа (II)</item>
+        <item>Реакция горения бензола</item>
+        <item>Рассчитать стандартную энтальпию и стандартную энтропию химической реакции.</item>
+        <item>Рассчитать стандартную энтальпию и стандартную энтропию химической реакции.</item>
+        <item>Рассчитать стандартную энтальпию и стандартную энтропию химической реакции.</item>
+    </string-array>
 </resources>

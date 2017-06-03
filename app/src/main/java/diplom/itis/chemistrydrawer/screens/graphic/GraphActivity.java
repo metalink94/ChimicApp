@@ -2,7 +2,6 @@ package diplom.itis.chemistrydrawer.screens.graphic;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,14 +20,10 @@ import org.parceler.Parcels;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.chemistrydrawer.utils.BaseActivity;
-import diplom.itis.drawer.DrawerDataSender;
-import diplom.itis.drawer.DrawerModel;
-import diplom.itis.drawer.DrawerView;
 
 
 /**
@@ -37,11 +31,10 @@ import diplom.itis.drawer.DrawerView;
  */
 
 public class GraphActivity extends BaseActivity implements GraphView,
-        NavigationView.OnNavigationItemSelectedListener,
-        DrawerDataSender {
+        NavigationView.OnNavigationItemSelectedListener {
 
     public static final String KEY_MODEL = "key_model";
-    private DrawerView mView;
+//    private DrawerView mView;
     private GraphPresenter mPresenter;
     private CreateExperimentsModel mModel;
 
@@ -63,8 +56,8 @@ public class GraphActivity extends BaseActivity implements GraphView,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-        mView = (DrawerView) findViewById(R.id.view);
-        mView.setCallback(this);
+//        mView = (DrawerView) findViewById(R.id.view);
+//        mView.setCallback(this);
         setNavigation();
         mPresenter = new GraphPresenter(this);
         if (getIntent().hasExtra(KEY_MODEL)) {
@@ -110,7 +103,7 @@ public class GraphActivity extends BaseActivity implements GraphView,
 
     @Override
     public void setAngles(int i) {
-        mView.setmNumberOfPoints(i);
+//        mView.setmNumberOfPoints(i);
     }
 
     @Override
@@ -122,7 +115,7 @@ public class GraphActivity extends BaseActivity implements GraphView,
             public void onClick(DialogInterface dialog, int item) {
                 // Do something with the selection
                 Toast.makeText(GraphActivity.this, array[item], Toast.LENGTH_LONG).show();
-                mView.setText(array[item].substring(0,array[item].indexOf(" ")));
+//                mView.setText(array[item].substring(0,array[item].indexOf(" ")));
             }
         });
         AlertDialog alert = builder.create();
@@ -140,13 +133,13 @@ public class GraphActivity extends BaseActivity implements GraphView,
                 Toast.makeText(GraphActivity.this, array[item], Toast.LENGTH_LONG).show();
                 switch (item) {
                     case 0:
-                        mView.setColor(Color.RED);
+//                        mView.setColor(Color.RED);
                         break;
                     case 1:
-                        mView.setColor(Color.GREEN);
+//                        mView.setColor(Color.GREEN);
                         break;
                     case 2:
-                        mView.setColor(Color.BLUE);
+//                        mView.setColor(Color.BLUE);
                         break;
                 }
             }
@@ -207,16 +200,5 @@ public class GraphActivity extends BaseActivity implements GraphView,
                 return super.onOptionsItemSelected(item);
 
         }
-    }
-
-    @Override
-    public void getListElements(List<DrawerModel> mPointList) {
-        Log.d("ListCallback","ListSize " + mPointList.size());
-        //mModel.addElements(mPointList);
-    }
-
-    @Override
-    public void getLastModel(DrawerModel drawerModel) {
-
     }
 }

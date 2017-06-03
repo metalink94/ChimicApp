@@ -1,1 +1,1 @@
-include ':app', ':drawer', ':chimicdrawer'
+include ':app', ':chimicdrawer'

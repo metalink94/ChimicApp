@@ -29,7 +29,7 @@
             android:name=".activities.LoginActivity"
             android:label="Вход"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/NoActionBar" />
 
         <activity
             android:name=".screens.tasks.TasksListActivity"

@@ -10,9 +10,10 @@
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:src="@drawable/ic_lock_black_24px"/>
+        android:layout_margin="16dp"
+        android:background="@drawable/blue_circle"
+        android:padding="10dp"
+        app:srcCompat="@drawable/ic_book"/>
 
     <TextView
         android:id="@+id/title"
@@ -20,8 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/icon"
         android:text="Title"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="18dp"
         android:textSize="16dp"
         android:textStyle="bold"
         android:textColor="@color/app_text_color"
@@ -34,8 +34,7 @@
         android:layout_toRightOf="@+id/icon"
         android:layout_below="@+id/title"
         android:text="Description"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="6dp"
         android:textSize="14dp"
         />
 
