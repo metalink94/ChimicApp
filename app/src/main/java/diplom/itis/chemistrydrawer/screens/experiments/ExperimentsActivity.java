@@ -34,6 +34,7 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
     private RecyclerView mExperimentsList;
     private FloatingActionButton mFab;
     private ExperimentsPresenter mPresenter;
+    TaskModel mModel;
 
     public static final String KEY_EXPERIMENTS = "experiments";
 
@@ -78,6 +79,7 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
         Log.d(ExperimentsActivity.class.getSimpleName(), "requestCode = " + requestCode + " resultColde = " + resultCode);
         if (requestCode == REQUEST_CODE_DATA) {
             CreateExperimentsModel model = Parcels.unwrap(data.getParcelableExtra(WebViewActivity.KEY_MODEL));
+            model.description = mModel.description;
             mAdapter.addItem(model);
         }
 
@@ -106,6 +108,7 @@ public class ExperimentsActivity extends BaseActivity implements View.OnClickLis
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(((TaskModel) getIntent().getParcelableExtra(KEY_EXPERIMENTS)).title);
+        mModel = ((TaskModel) getIntent().getParcelableExtra(KEY_EXPERIMENTS));
+        getSupportActionBar().setTitle(mModel.title);
     }
 }

@@ -27,7 +27,7 @@ import diplom.itis.chemistrydrawer.utils.BaseActivity;
 public class TasksListActivity extends BaseActivity implements View.OnClickListener, TaskListView{
 
     @BindView(R.id.tasks_list)
-    private RecyclerView mTasksList;
+    RecyclerView mTasksList;
     private TaskListPresenter mPresenter;
 
     @Override
@@ -36,6 +36,7 @@ public class TasksListActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_tasks);
         ButterKnife.bind(this);
         mPresenter = new TaskListPresenter(this, mNetworkWorker);
+        mPresenter.setTasks(getResources().getStringArray(R.array.task_titles), getResources().getStringArray(R.array.task_message));
     }
 
 

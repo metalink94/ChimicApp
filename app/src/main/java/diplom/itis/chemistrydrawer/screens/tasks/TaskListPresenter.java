@@ -23,15 +23,15 @@ public class TaskListPresenter extends Presenter<TaskListView> implements TaskLi
         setView(view);
         mRepo = new TaskListRepository(mNetworkWorker);
         mRepo.setCallback(this);
-        setViews();
+        getView().showView();
         getAdditives();
     }
 
-    private void setTasks() {
+    public void setTasks(String[] titles, String[] messages) {
         List<TaskModel> taskModels = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < titles.length; i++) {
             Log.d(getClass().getName(),"getListSize " + i);
-            TaskModel model = new TaskModel(i, "Задача " + i, "Описание данной задачи под номером " + i);
+            TaskModel model = new TaskModel(i, titles[i], messages[i]);
             taskModels.add(model);
         }
         Log.d(getClass().getName(), "Get List size() = "+ taskModels.size());
@@ -43,11 +43,6 @@ public class TaskListPresenter extends Presenter<TaskListView> implements TaskLi
         mRepo.getAdditives();
         mRepo.getMagics();
         mRepo.getModels();
-        setTasks();
-    }
-
-    public void setViews() {
-        getView().showView();
     }
 
     @Override

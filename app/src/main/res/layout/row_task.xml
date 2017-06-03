@@ -35,6 +35,7 @@
         android:layout_below="@+id/title"
         android:text="Description"
         android:layout_marginTop="6dp"
+        android:maxLines="3"
         android:textSize="14dp"
         />
 

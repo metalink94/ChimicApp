@@ -1,6 +1,7 @@
 package diplom.itis.chemistrydrawer.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import diplom.itis.chemistrydrawer.R;
 import diplom.itis.chemistrydrawer.models.CreateExperimentsModel;
 import diplom.itis.chemistrydrawer.models.ExperimentsModel;
 import diplom.itis.chemistrydrawer.models.TaskModel;
+
+import static android.view.View.GONE;
 
 /**
  * Created by denis_000 on 06.11.2016.
@@ -91,11 +94,17 @@ public class BaseAdapter extends RecyclerView.Adapter {
             final ExperimentHolder experimentHolder = (ExperimentHolder) holder;
             experimentHolder.title.setText(experimentsModel.title);
             experimentHolder.description.setText(experimentsModel.description);
-            if (experimentsModel.status.equals(ExperimentsModel.STATUS_OK)) {
-                experimentHolder.iconStatus.setImageResource(R.drawable.ic_done_black_24px);
-            } else if (experimentsModel.status.equals(ExperimentsModel.STATUS_ERROR)) {
-                experimentHolder.iconStatus.setImageResource(R.drawable.ic_highlight_off_black_24px);
+            if (position == 0) {
+                experimentHolder.icon.setImageResource(R.drawable.ic_refresh);
+                experimentHolder.icon.setBackground(ContextCompat.getDrawable(mContext, R.drawable.yellow_circle));
+            } else if (position%2 == 0) {
+                experimentHolder.icon.setImageResource(R.drawable.ic_close);
+                experimentHolder.icon.setBackground(ContextCompat.getDrawable(mContext, R.drawable.red_circle));
+            } else {
+                experimentHolder.icon.setImageResource(R.drawable.ic_check);
+                experimentHolder.icon.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_cirle));
             }
+            experimentHolder.iconStatus.setVisibility(GONE);
             experimentHolder.setOnClickListener(mOnClickListener, experimentsModel);
             return;
         }
@@ -104,7 +113,17 @@ public class BaseAdapter extends RecyclerView.Adapter {
             final ExperimentHolder experimentHolder = (ExperimentHolder) holder;
             experimentHolder.title.setText(experimentsModel.name);
             experimentHolder.description.setText(experimentsModel.description);
-            experimentHolder.iconStatus.setImageResource(R.drawable.ic_done_black_24px);
+            experimentHolder.iconStatus.setVisibility(GONE);
+            if (position == 0) {
+                experimentHolder.icon.setImageResource(R.drawable.ic_refresh);
+                experimentHolder.icon.setBackground(ContextCompat.getDrawable(mContext, R.drawable.yellow_circle));
+            } else if (position%2 == 0) {
+                experimentHolder.icon.setImageResource(R.drawable.ic_close);
+                experimentHolder.icon.setBackground(ContextCompat.getDrawable(mContext, R.drawable.red_circle));
+            } else {
+                experimentHolder.icon.setImageResource(R.drawable.ic_check);
+                experimentHolder.icon.setBackground(ContextCompat.getDrawable(mContext, R.drawable.green_cirle));
+            }
             experimentHolder.setOnClickListener(mOnClickListener, experimentsModel);
             return;
         }
